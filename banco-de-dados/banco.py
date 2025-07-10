@@ -27,7 +27,7 @@ class Estoque:
         conexao.commit()
 
     @staticmethod
-    def mostra_produtos(self):
+    def mostra_produtos():
         cursor.execute("SELECT * FROM estoque")
         for linha in cursor.fetchall():
             print(linha)
@@ -42,14 +42,11 @@ class Estoque:
                            (self.nome, self.codigo, self.quantidade, self.id))
         conexao.commit()
          
-    def deletar_produto(self):
-        if self.id is None:
-            print("precisa ser um id valido")
-            return
-        else:
-            cursor.execute("DELETE FROM estoque WHERE id = ?", (self.id,))
-            print(f"produto com o id {self.id} deletado com sucesso")
-            conexao.commit()
+    @staticmethod
+    def deletar_produto_por_id(id):
+        cursor.execute("DELETE FROM estoque WHERE id = ?", (id,))
+        conexao.commit()
+        print(f"Produto com o ID {id} deletado com sucesso.")
 
 
 class Comandos:
@@ -73,9 +70,11 @@ class Comandos:
         print("produto atualizado com sucesso")
 
     def deletar(self):
-        id_produto = int(input("ID do produto para deletar: "))
-        produto = Estoque(None, None, None, id_produto)
-        produto.deletar_produto()
+        try:
+            id_produto = int(input("ID do produto para deletar: "))
+            Estoque.deletar_produto_por_id(id_produto)
+        except ValueError:
+            print("ID inválido.")
 
     @staticmethod
     def mostra_produtos():
@@ -96,14 +95,16 @@ while True:
         continue
     
     if valor == 1:
-        Comandos.cadastro()
+        comandos.cadastro()
     elif valor == 2:
-        Comandos.mostra_produtos()
+        comandos.mostra_produtos()
     elif valor == 3:
-        Comandos.atualizar()
+        comandos.atualizar()
     elif valor == 4:
-        Comandos.deletar()
+        comandos.deletar()
     elif valor == 5:
         break
+    else:
+        print("Opção inválida.")
 
 conexao.close()
