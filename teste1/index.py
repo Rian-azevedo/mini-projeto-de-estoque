@@ -85,9 +85,8 @@ class Comandos:
 
 comandos = Comandos()
 
-print(f"1 cadastrar\n 2 mostrar\n 3 atualizar\n 4 deletar\n 5 sair\n")
-
 while True:
+    print(f"\n1 cadastrar\n2 mostrar\n3 atualizar\n4 deletar\n5 sair\n")
     try:
         valor = int(input("Digite um número: "))
     except ValueError:
